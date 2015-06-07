@@ -7,10 +7,12 @@ public class client {
 	int tel;
 	String ID;
 	String pwd;
-	int price;////음료,음식+사용시간의 총요금
+	int price;//음료,음식+사용시간의 총요금 >>손님이 지불 한 총 금액.
+	int using;//음료,음식 요금 >>선불 일 경우 종료 시 내야하는 금액.
 	
 	
-	public client(int num,String name,int rrn,int tel,String ID,String pwd,int price){
+	
+	public client(int num,String name,int rrn,int tel,String ID,String pwd,int price,int using){
 	this.num = num;
 	this.name = name;
 	this.rrn = rrn;
@@ -18,6 +20,7 @@ public class client {
 	this.ID = ID;
 	this.pwd = pwd;
 	this.price = price;
+	this.using = using;
 	}
 	
 	public int getnum(){
@@ -38,8 +41,11 @@ public class client {
 	public String getpwd(){
 		return pwd;
 	}
-	public int getuprice(){
+	public int getprice(){
 		return price;
+	}
+	public int getusing(){
+		return using;
 	}
 	public void setnum(int num){
 		this.num = num;
@@ -61,6 +67,9 @@ public class client {
 	}
 	public void setprice(int price){
 		this.price += price;
+	}
+	public void setusing(int using){
+		this.using +=using;
 	}
 }
 	
