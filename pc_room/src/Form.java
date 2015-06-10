@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 
 
 
-class panel1 extends JPanel implements ActionListener{	
+/*class panel1 extends JPanel implements ActionListener{	
 	public panel1(){
 		setLayout(new GridLayout(3,1));
 		JLabel label1 = new JLabel("¾ÆÀÌµð", Label.RIGHT);
@@ -195,6 +195,12 @@ public class Form{
 		jf.setPreferredSize(new Dimension(350,350));
 		jf.pack();
 		jf.setVisible(true);
+		
+		con.add(new panel4(), BorderLayout.CENTER);
+		jf.setPreferredSize(new Dimension(350,350));
+		jf.pack();
+		jf.setVisible(true);
+		
 	}
 }
-
+*/
