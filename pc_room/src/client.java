@@ -1,38 +1,34 @@
 
 public class client {
 	
-	int num;
+	
 	String name;
-	int rrn;//주민등록번호
-	int tel;
+	String rrn;//주민등록번호
+	String tel;
 	String ID;
 	String pwd;
-	int price;//음료,음식+사용시간의 총요금 >>손님이 지불 한 총 금액.
-	int using;//음료,음식 요금 >>선불 일 경우 종료 시 내야하는 금액.
 	
 	
 	
-	public client(int num,String name,int rrn,int tel,String ID,String pwd,int price,int using){
-	this.num = num;
+	
+	public client(String name,String rrn,String tel,String ID,String pwd){
+	
 	this.name = name;
 	this.rrn = rrn;
 	this.tel = tel;
 	this.ID = ID;
 	this.pwd = pwd;
-	this.price = price;
-	this.using = using;
+	
 	}
 	
-	public int getnum(){
-		return num;
-	}
+	
 	public String getname(){
 		return name;
 	}
-	public int getrrn(){
+	public String getrrn(){
 		return rrn;
 	}
-	public int gettel(){
+	public String gettel(){
 		return tel;
 	}
 	public String getID(){
@@ -41,22 +37,15 @@ public class client {
 	public String getpwd(){
 		return pwd;
 	}
-	public int getprice(){
-		return price;
-	}
-	public int getusing(){
-		return using;
-	}
-	public void setnum(int num){
-		this.num = num;
-	}
+	
+	
 	public void setname(String name){
 		this.name =  name;
 	}
-	public void setrrn(int rrn){
+	public void setrrn(String rrn){
 		this.rrn = rrn;
 	}
-	public void settel(int tel){
+	public void settel(String tel){
 		this.tel= tel;
 	}
 	public void setID(String ID){
@@ -65,12 +54,7 @@ public class client {
 	public void setpwd(String pwd){
 		this.pwd = pwd;
 	}
-	public void setprice(int price){
-		this.price += price;
-	}
-	public void setusing(int using){
-		this.using +=using;
-	}
+	
 }
 	
 	

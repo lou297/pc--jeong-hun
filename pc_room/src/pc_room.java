@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Panel;
@@ -19,9 +20,14 @@ public class pc_room extends JFrame{
 		seat.setLayout(new GridLayout(5,5,5,5));
 		
 		JButton bt1 = new JButton("1¹ø ÁÂ¼®" );
-		bt1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new panel1();}});
+		bt1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) 
+		{ 
+			
+			
+			new panel1();bt1.setBackground(Color.BLUE);}});
 		JButton bt2 = new JButton("2¹ø ÁÂ¼®" );
-		bt2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new panel1();}});
+		bt2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) 
+		{new panel1();bt2.setBackground(Color.BLUE);}});
 		JButton bt3 = new JButton("3¹ø ÁÂ¼®" );
 		bt3.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new panel1();}});
 		JButton bt4 = new JButton("4¹ø ÁÂ¼®" );

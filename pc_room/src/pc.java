@@ -18,7 +18,7 @@ public class pc {
 	
 	public void addprice(int time,int index){//지불해야하는 요금 추가	
 		int price=1200*time;
-		clientlist.get(index).setprice(price);	
+	//	clientlist.get(index).setprice(price);	
 	}
 	
 	
@@ -33,7 +33,7 @@ public class pc {
 		System.out.println("변경 할 전화번호 비밀번호");
 		int tel=s.nextInt();
 		String pwd = s.next();
-		clientlist.get(index).settel(tel);
+		//clientlist.get(index).settel(tel);
 		clientlist.get(index).setpwd(pwd);
 	}
 	
@@ -57,7 +57,7 @@ public class pc {
 					int tel = s.nextInt();
 					String ID = s.next();
 					String pwd = s.next();
-					a.clientlist.add(new client(num,name,rrn,tel,ID,pwd,price,using));
+				//	a.clientlist.add(new client(num,name,rrn,tel,ID,pwd,price,using));
 					num++;
 				}
 				else{
