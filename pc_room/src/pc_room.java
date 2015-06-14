@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.Book;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +15,7 @@ import javax.swing.JPanel;
 
 public class pc_room extends JFrame{
 	public pc_room(){
+		setTitle("한양 피시방");
 		getContentPane();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -20,14 +23,9 @@ public class pc_room extends JFrame{
 		seat.setLayout(new GridLayout(5,5,5,5));
 		
 		JButton bt1 = new JButton("1번 좌석" );
-		bt1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) 
-		{ 
-			
-			
-			new panel1();bt1.setBackground(Color.BLUE);}});
+		bt1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new panel1();}});
 		JButton bt2 = new JButton("2번 좌석" );
-		bt2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) 
-		{new panel1();bt2.setBackground(Color.BLUE);}});
+		bt2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new panel1();}});
 		JButton bt3 = new JButton("3번 좌석" );
 		bt3.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new panel1();}});
 		JButton bt4 = new JButton("4번 좌석" );
@@ -100,15 +98,37 @@ public class pc_room extends JFrame{
 		seat.add(bt24);
 		seat.add(bt25);
 		
+		
 		JPanel menu = new JPanel();
 		menu.setLayout(new BorderLayout());
 		JButton re = new JButton("회원정보 수정" );
-		JButton stock = new JButton("재고확인" );
+		JButton search = new JButton("사용자 이용내역 찾기" );
 		JButton use = new JButton("이용내역" );
 		JButton list = new JButton("회원목록" );
+		re.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	new info();
+            }
+        });
+		search.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	new infolist();
+            }
+        });
+		list.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	new list();
+            }
+        });
+		
+		use.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	new use();
+            }
+        });
 		Panel a = new Panel();
 		a.add(re);
-		a.add(stock);
+		a.add(search);
 		a.add(use);
 		a.add(list);
 		menu.add(a);

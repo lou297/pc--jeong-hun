@@ -1,9 +1,11 @@
-public class usinglist {
-	String name_;
-	String ID_;
-	String start;
-	String end;
-	int price;
+import java.io.Serializable;
+
+public class usinglist implements Serializable{
+	private String name_;
+	private String ID_;
+	private String start;
+	private String end;
+	private int price;
 	public usinglist(String name_,String ID_,String start,String end,int price){
 		this.name_= name_;
 		this.ID_ =ID_;

@@ -8,12 +8,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
 public class panel3 extends JFrame{
-	
+	panel2 a = new panel2(null,null);
 	public panel3(){
 		
 		getContentPane();
@@ -57,7 +58,8 @@ public class panel3 extends JFrame{
 		JButton order =new JButton("주문" );
 		order.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                new panel2();
+                addprice(text6, text7, text8, text9, text10, text11);
+                
                 setVisible(false);
             }
         });
@@ -66,6 +68,31 @@ public class panel3 extends JFrame{
 		setPreferredSize(new Dimension(350,350));
 		pack();
 		setVisible(true);
+	}
+	public void addprice(JTextField text6,JTextField text7,JTextField text8,JTextField text9
+			,JTextField text10,JTextField text11){
+		
+		int h=Integer.parseInt(text6.getText());
+        int s1=Integer.parseInt(text7.getText());
+        int r=Integer.parseInt(text8.getText());
+        int c1=Integer.parseInt(text9.getText());
+        int s2=Integer.parseInt(text10.getText());
+        int c2=Integer.parseInt(text11.getText());
+        
+        if(text6.getText().equals("")){}
+        else {a.price+=h*2000;}
+        if(text7.getText().equals("")){}
+        else {a.price+=s1*2000;}
+        if(text8.getText().equals("")){}
+        else {a.price+=r*1500;}
+        if(text9.getText().equals("")){}
+        else {a.price+=c1*1000;}
+        if(text10.getText().equals("")){}
+        else {a.price+=s2*1000;}
+        if(text11.getText().equals("")){}
+        else {a.price+=c2*1000;}
+        int total = h*2000+s1*2000+r*1500+c1*1000+s2*1000+c2*1000;
+        JOptionPane.showMessageDialog(null,"총 "+total+"원 입니다.");
 	}
 	
 

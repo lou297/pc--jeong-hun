@@ -4,9 +4,9 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -17,65 +17,52 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
-
-public class panel4 extends JFrame{
+public class info2 extends JFrame{
+	main a  = new main();
 	
-	
-	main a = new main();
-	ArrayList<client> clients= new ArrayList<client>();
-	
-	public void adduser(String name,String rrn,String tel,String ID,String pwd){
-		client one =  new client(name,rrn,tel,ID,pwd); 
-		clients.add(one);
-		saveuser(clients);
-	}
-	
-	public void saveuser(ArrayList clients){
-		SwingWorker worker = new SwingWorker(){
-			
-			@Override
-			protected Object doInBackground() throws Exception {
-				FileOutputStream fout = null;
-				ObjectOutputStream oos = null;
-
-				
-				
-				try{fout = new FileOutputStream("client.dat");
-					oos = new ObjectOutputStream(fout);
-
-					oos.writeObject(clients);//
-					oos.reset();
-					
-
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				} finally {
-					try {
-						fout.close();
-						oos.close();
-					} catch (IOException ioe) {
-					}
+	public void modify(JTextField text1,JTextField text2,JTextField text3
+			,JTextField text4,JTextField text5,JTextField text6){
+		String name=text1.getText();
+		String rrn=text2.getText()+text3.getText();
+		String tel=text4.getText();
+		String ID=text5.getText();
+		String pwd=text6.getText();
+		for(int i =0;i<a.call().size();i++){
+			if(((client) a.call().get(i)).getname().equals(name)){
+				if(((client) a.call().get(i)).getrrn().equals(rrn)){
+					a.call().set(i,new client(name,rrn,tel,ID,pwd));
 				}
-				return null;
 			}
-		};
-		worker.execute();
+		}
+		
 	}
 	
 	
 	
+		
+	
+	
+
 	
 	
 	
-	public panel4(){
+	
+	
+	public info2(String name,String rrn1,String rrn2){
 		getContentPane();
 		setLayout(new GridLayout(6,1));
 		JLabel label1 = new JLabel("이름", Label.RIGHT);
 		JTextField text1 = new JTextField(10); 
+		text1.setText("name");
+		text1.setEditable(false);
 		JLabel label2 = new JLabel("주민등록번호" ,Label.RIGHT);
 		JTextField text2_1 = new JTextField(7);
+		text2_1.setText(rrn1);
+		text2_1.setEditable(false);
 		Label mid = new Label("-", Label.CENTER);
 		JTextField text2_2 = new JTextField(7);
+		text2_2.setText(rrn2);
+		text2_2.setEditable(false);
 		JLabel label3 = new JLabel("전화번호" ,Label.RIGHT);
 		JTextField text3 = new JTextField(15);
 		JLabel label4 = new JLabel("아이디" ,Label.RIGHT);
@@ -83,7 +70,7 @@ public class panel4 extends JFrame{
 		JTextField text4 = new JTextField(15);
 		JLabel label5 = new JLabel("비밀번호" ,Label.RIGHT);
 		JTextField text5 = new JTextField(15);
-		JButton check = new JButton("회원가입" ); 
+		JButton check = new JButton("수정" ); 
 		
 		/*String name =text1.getText();
     	String rrn = text2_1.getText()+text2_2.getText();
@@ -98,8 +85,8 @@ public class panel4 extends JFrame{
             	int k=0;
             	if(ID.equals("")){JOptionPane.showMessageDialog(null,"아이디를 입력해주세요.");}
             	else{
-            		for(int i=0;i<a.call().size();i++){
-        			if(((client) a.call().get(i)).getID().equals(ID)){
+            		for(int i=0;i< a.call().size();i++){
+        			if( ((client)a.call().get(i)).getID().equals(ID)){
         				k=1;
         				JOptionPane.showMessageDialog(null,"사용할 수 없는 아이디입니다.");
         			}//j==1이라면 같은 아이디가 존재함
@@ -138,14 +125,14 @@ public class panel4 extends JFrame{
             	}
             	else{
             		for(int i=0;i<a.call().size();i++){
-        			if(((client) a.call().get(i)).getID().equals(ID)){
+        			if(((client)a. call().get(i)).getID().equals(ID)){
         				k=1;
         				JOptionPane.showMessageDialog(null,"아이디 중복확인을 해주세요.");
         			}//j==1이라면 같은 아이디가 존재함
             		}
             		if(k==0){
-            			JOptionPane.showMessageDialog(null,"회원가입이 완료 되었습니다.");
-            			adduser(name,rrn,tel,ID,pwd);
+            			modify(text1,text2_1,text2_2,text3,text4,text5);
+            			JOptionPane.showMessageDialog(null,"수정 되었습니다.");
             			setVisible(false);
             		}
             	}

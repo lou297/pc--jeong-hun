@@ -1,12 +1,14 @@
+import java.io.Serializable;
 
-public class client {
+
+public class client implements Serializable {
 	
 	
-	String name;
-	String rrn;//주민등록번호
-	String tel;
-	String ID;
-	String pwd;
+	private String name;
+	private String rrn;//주민등록번호
+	private String tel;
+	private String ID;
+	private String pwd;
 	
 	
 	
