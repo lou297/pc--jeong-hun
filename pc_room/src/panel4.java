@@ -122,6 +122,7 @@ public class panel4 extends JFrame{
 	}
 	
 	public void check(String name,String rrn,String tel,String ID,String pwd){
+		
 		ArrayList<client> clients = new ArrayList<client>();
 		SwingWorker worker = new SwingWorker() {
 
@@ -173,6 +174,7 @@ public class panel4 extends JFrame{
 	
 	
 	public panel4(){
+		setTitle("회원가입");
 		getContentPane();
 		setLayout(new GridLayout(6,1));
 		JLabel label1 = new JLabel("이름", Label.RIGHT);

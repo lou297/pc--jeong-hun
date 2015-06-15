@@ -23,9 +23,11 @@ import javax.swing.SwingWorker;
 public class panel2 extends JFrame{
 	int i =-1;
 	int price=0;
+	
 	JTextArea timecheck=new JTextArea(4,7);
 	ArrayList<uselist> user = new ArrayList<uselist>();
 	public panel2(String name ,String ID){
+		setTitle("pc화면");
 		Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String start = (new SimpleDateFormat("yyyy년MM월dd일HH시mm분").format(date));

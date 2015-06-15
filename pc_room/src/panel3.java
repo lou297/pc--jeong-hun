@@ -20,9 +20,10 @@ import javax.swing.SwingWorker;
 
 
 public class panel3 extends JFrame{
+	
 	ArrayList <foodlist> list = new ArrayList<foodlist>();
 	public  panel3(String id,String start){
-		
+		setTitle("음식메뉴");
 		
 		getContentPane();
 		setLayout(new GridLayout(7,1));

@@ -20,7 +20,7 @@ import javax.swing.SwingWorker;
 
 public class panel1 extends JFrame{
 	public panel1(){
-		
+		setTitle("로그인화면");
 		getContentPane();
 		setLayout(new GridLayout(3,1));
 		JLabel label1 = new JLabel("아이디", Label.RIGHT);
