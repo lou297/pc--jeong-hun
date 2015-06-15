@@ -3,6 +3,10 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 public class info extends JFrame{
 	main a =new main();
@@ -29,7 +34,7 @@ public class info extends JFrame{
 		search.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
             	
-            	int k =0;
+            	
             	String name2=name.getText();
             	String rrn3=rrn.getText();
             	String rrn4=rrn1.getText();
@@ -41,23 +46,7 @@ public class info extends JFrame{
             		JOptionPane.showMessageDialog(null,"주민등록번호를 입력해주세요.");
             	}
             	else{
-            		for(int i =0;i<a.call().size();i++){
-            		if(((client) a.call().get(i)).getname().equals(name2)){
-            			k=1;
-            			if(((client) a.call().get(i)).getrrn().equals(rrn2)){
-            				new info2(name2,rrn3,rrn4);
-            				setVisible(false);
-            			}
-            			else{
-            				JOptionPane.showMessageDialog(null,"주민등록번호가 일치하지 않습니다.");
-            			}
-            		}
-            		System.out.println(k);
-            		
-            		}
-            		if(k==0){
-            			JOptionPane.showMessageDialog(null,"일치하는 이름이 없습니다.");
-            		}
+            		modify(name2,rrn3,rrn4,rrn2);
             	}
             	
             }
@@ -82,5 +71,62 @@ public class info extends JFrame{
 		setVisible(true);
 	}
 	
+	public void modify(String name2,String rrn3 ,String rrn4,String rrn2 ){
+		ArrayList<client> clients = new ArrayList<client>();
+		SwingWorker worker = new SwingWorker() {
+		
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				
 
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					
+					for (int i = 0; i < list.size(); i++)
+						clients.add((client) list.get(i));
+
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+					} catch (IOException ioe) {
+					}
+				}
+				int k =0;
+				int j=0;
+				for(int i =0;i<clients.size();i++){
+					
+            		if(clients.get(i).getname().equals(name2)){
+            			k=1;
+            			if(clients.get(i).getrrn().equals(rrn2)){
+            				j=1;
+            				
+            				new info2(name2,rrn3,rrn4);
+            				setVisible(false);
+            				break;
+            			}
+            		} 
+            			
+            		}
+            		if(k==1&&j==0){
+            				JOptionPane.showMessageDialog(null,"주민등록번호가 일치하지 않습니다.");}
+            		
+            		
+            		if(k==0){
+            			JOptionPane.showMessageDialog(null,"일치하는 이름이 없습니다.");
+            		}
+				return null;
+			}
+		};
+		worker.execute();
+	}
+	
 }

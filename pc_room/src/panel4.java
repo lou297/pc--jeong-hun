@@ -4,8 +4,10 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class panel4 extends JFrame{
 	public void adduser(String name,String rrn,String tel,String ID,String pwd){
 		client one =  new client(name,rrn,tel,ID,pwd); 
 		clients.add(one);
+		System.out.println();
 		saveuser(clients);
 	}
 	
@@ -35,12 +38,18 @@ public class panel4 extends JFrame{
 			
 			@Override
 			protected Object doInBackground() throws Exception {
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
 				FileOutputStream fout = null;
 				ObjectOutputStream oos = null;
 
-				
-				
-				try{fout = new FileOutputStream("client.dat");
+				try{fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					for (int i = 0; i < list.size(); i++)
+						clients.add((client) list.get(i));
+					
+					fout = new FileOutputStream("client.dat");
 					oos = new ObjectOutputStream(fout);
 
 					oos.writeObject(clients);//
@@ -51,6 +60,8 @@ public class panel4 extends JFrame{
 					System.out.println(e.getMessage());
 				} finally {
 					try {
+						ois.close();
+						fin.close();
 						fout.close();
 						oos.close();
 					} catch (IOException ioe) {
@@ -63,8 +74,102 @@ public class panel4 extends JFrame{
 	}
 	
 	
+	public void checkid(String ID){
+		ArrayList<client> clients = new ArrayList<client>();
+		SwingWorker worker = new SwingWorker() {
+
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				
+				int k=0;
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					
+					for (int i = 0; i < list.size(); i++)
+						{clients.add((client) list.get(i));}
+
+					for(int i=0;i<clients.size();i++){
+	        			if(clients.get(i).getID().equals(ID)){
+	        				k=1;
+	        				JOptionPane.showMessageDialog(null,"사용할 수 없는 아이디입니다.");
+	        			}//j==1이라면 같은 아이디가 존재함
+	        			
+	            		}
+	            		if(k==0){
+	            			JOptionPane.showMessageDialog(null,"사용할 수 있는 아이디입니다.");
+	            		}
+					
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+					} catch (IOException ioe) {
+					}
+				}
+				
+				return null;
+			}
+		};
+		worker.execute();
+	}
 	
-	
+	public void check(String name,String rrn,String tel,String ID,String pwd){
+		ArrayList<client> clients = new ArrayList<client>();
+		SwingWorker worker = new SwingWorker() {
+
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				
+				int k=0;
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					
+					for (int i = 0; i < list.size(); i++)
+						{clients.add((client) list.get(i));}
+
+					for(int i=0;i<clients.size();i++){
+	        			if(clients.get(i).getID().equals(ID)){
+	        				k=1;
+	        				JOptionPane.showMessageDialog(null,"아이디 중복확인을 해주세요.");
+	        			}//j==1이라면 같은 아이디가 존재함
+	            		}
+	            		if(k==0){
+	            			JOptionPane.showMessageDialog(null,"회원가입이 완료 되었습니다.");
+	            			adduser(name,rrn,tel,ID,pwd);
+	            			setVisible(false);
+	            		}
+					
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+					} catch (IOException ioe) {
+					}
+				}
+				
+				return null;
+			}
+		};
+		worker.execute();
+
+		
+	}
 	
 	
 	public panel4(){
@@ -98,16 +203,7 @@ public class panel4 extends JFrame{
             	int k=0;
             	if(ID.equals("")){JOptionPane.showMessageDialog(null,"아이디를 입력해주세요.");}
             	else{
-            		for(int i=0;i<a.call().size();i++){
-        			if(((client) a.call().get(i)).getID().equals(ID)){
-        				k=1;
-        				JOptionPane.showMessageDialog(null,"사용할 수 없는 아이디입니다.");
-        			}//j==1이라면 같은 아이디가 존재함
-        			
-            		}
-            		if(k==0){
-            			JOptionPane.showMessageDialog(null,"사용할 수 있는 아이디입니다.");
-            		}
+            		checkid(ID);
             	}
             	
 
@@ -137,17 +233,7 @@ public class panel4 extends JFrame{
             		JOptionPane.showMessageDialog(null,"비밀번호를 입력해주세요.");
             	}
             	else{
-            		for(int i=0;i<a.call().size();i++){
-        			if(((client) a.call().get(i)).getID().equals(ID)){
-        				k=1;
-        				JOptionPane.showMessageDialog(null,"아이디 중복확인을 해주세요.");
-        			}//j==1이라면 같은 아이디가 존재함
-            		}
-            		if(k==0){
-            			JOptionPane.showMessageDialog(null,"회원가입이 완료 되었습니다.");
-            			adduser(name,rrn,tel,ID,pwd);
-            			setVisible(false);
-            		}
+            		check(name,rrn,tel,ID,pwd);
             	}
             	
             }

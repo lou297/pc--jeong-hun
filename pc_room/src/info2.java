@@ -5,8 +5,10 @@ import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -27,18 +29,161 @@ public class info2 extends JFrame{
 		String tel=text4.getText();
 		String ID=text5.getText();
 		String pwd=text6.getText();
-		for(int i =0;i<a.call().size();i++){
-			if(((client) a.call().get(i)).getname().equals(name)){
-				if(((client) a.call().get(i)).getrrn().equals(rrn)){
-					a.call().set(i,new client(name,rrn,tel,ID,pwd));
+		ArrayList<client> clients = new ArrayList<client>();
+		ArrayList<client> clients2 = new ArrayList<client>();
+		
+		clients2.add(new client(name,rrn,tel,ID,pwd));
+		SwingWorker worker = new SwingWorker() {
+		
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				FileOutputStream fout = null;
+				ObjectOutputStream oos = null;
+
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					int k =0;
+					for (int i = 0; i < list.size(); i++)
+						clients.add((client) list.get(i));
+					for(int i =0;i<clients.size();i++){
+						if(clients.get(i).getname().equals(name)){
+							if(clients.get(i).getrrn().equals(rrn)){
+								
+								k=i;
+								clients.set(i,clients2.get(0));
+							}
+						}
+					}
+					
+					fout = new FileOutputStream("client.dat");
+					oos = new ObjectOutputStream(fout);
+
+					oos.writeObject(clients);//
+					oos.reset();
+					
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+						fout.close();
+						oos.close();
+					} catch (IOException ioe) {
+					}
 				}
+				
+				return null;
 			}
-		}
+		};
+		worker.execute();
+		
 		
 	}
 	
+	public void checkid(String ID){
+		ArrayList<client> clients = new ArrayList<client>();
+		SwingWorker worker = new SwingWorker() {
+		
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				
+				
+
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					
+					for (int i = 0; i < list.size(); i++)
+						clients.add((client) list.get(i));
+
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+						
+					} catch (IOException ioe) {
+					}
+				}
+				int k =0;
+				for(int i=0;i<clients.size();i++){
+        			if( clients.get(i).getID().equals(ID)){
+    				k=1;
+    				JOptionPane.showMessageDialog(null,"사용할 수 없는 아이디입니다.");
+    			}//j==1이라면 같은 아이디가 존재함
+    			
+        		}
+        		if(k==0){
+        			JOptionPane.showMessageDialog(null,"사용할 수 있는 아이디입니다.");
+        		}
+				return null;
+			}
+		};
+		worker.execute();
+	}
 	
 	
+	public void check(String ID,JTextField text1,JTextField text2_1,JTextField text2_2
+			,JTextField text3,JTextField text4,JTextField text5){
+		ArrayList<client> clients = new ArrayList<client>();
+		SwingWorker worker = new SwingWorker() {
+
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				
+
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					
+					for (int i = 0; i < list.size(); i++)
+						clients.add((client) list.get(i));
+					int k =0;
+					for(int i=0;i<clients.size();i++){
+	        			if(clients.get(i).getID().equals(ID)){
+	        				k=1;
+	        				JOptionPane.showMessageDialog(null,"아이디 중복확인을 해주세요.");
+	        			}//j==1이라면 같은 아이디가 존재함
+	            		}
+	            		if(k==0){
+	            			modify(text1,text2_1,text2_2,text3,text4,text5);
+	            			JOptionPane.showMessageDialog(null,"수정 되었습니다.");
+	            			setVisible(false);
+	            		}
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+						
+					} catch (IOException ioe) {
+					}
+				}
+				
+				return null;
+			}
+		};
+		worker.execute();
+	}
 		
 	
 	
@@ -53,7 +198,7 @@ public class info2 extends JFrame{
 		setLayout(new GridLayout(6,1));
 		JLabel label1 = new JLabel("이름", Label.RIGHT);
 		JTextField text1 = new JTextField(10); 
-		text1.setText("name");
+		text1.setText(name);
 		text1.setEditable(false);
 		JLabel label2 = new JLabel("주민등록번호" ,Label.RIGHT);
 		JTextField text2_1 = new JTextField(7);
@@ -72,29 +217,16 @@ public class info2 extends JFrame{
 		JTextField text5 = new JTextField(15);
 		JButton check = new JButton("수정" ); 
 		
-		/*String name =text1.getText();
-    	String rrn = text2_1.getText()+text2_2.getText();
-    	String tel = text3.getText();
-    	String ID = text4.getText();
-    	String pwd = text5.getText();*/
+		
 		
 		checkid.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
             	String ID = text4.getText();
         
-            	int k=0;
+            	
             	if(ID.equals("")){JOptionPane.showMessageDialog(null,"아이디를 입력해주세요.");}
             	else{
-            		for(int i=0;i< a.call().size();i++){
-        			if( ((client)a.call().get(i)).getID().equals(ID)){
-        				k=1;
-        				JOptionPane.showMessageDialog(null,"사용할 수 없는 아이디입니다.");
-        			}//j==1이라면 같은 아이디가 존재함
-        			
-            		}
-            		if(k==0){
-            			JOptionPane.showMessageDialog(null,"사용할 수 있는 아이디입니다.");
-            		}
+            		checkid(ID);
             	}
             	
 
@@ -124,17 +256,7 @@ public class info2 extends JFrame{
             		JOptionPane.showMessageDialog(null,"비밀번호를 입력해주세요.");
             	}
             	else{
-            		for(int i=0;i<a.call().size();i++){
-        			if(((client)a. call().get(i)).getID().equals(ID)){
-        				k=1;
-        				JOptionPane.showMessageDialog(null,"아이디 중복확인을 해주세요.");
-        			}//j==1이라면 같은 아이디가 존재함
-            		}
-            		if(k==0){
-            			modify(text1,text2_1,text2_2,text3,text4,text5);
-            			JOptionPane.showMessageDialog(null,"수정 되었습니다.");
-            			setVisible(false);
-            		}
+            		check(ID,text1,text2_1,text2_2,text3,text4,text5);
             	}
             	
             }

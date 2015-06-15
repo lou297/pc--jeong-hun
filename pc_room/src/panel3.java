@@ -1,9 +1,14 @@
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Label;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,11 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 
 public class panel3 extends JFrame{
-	panel2 a = new panel2(null,null);
-	public panel3(){
+	ArrayList <foodlist> list = new ArrayList<foodlist>();
+	public  panel3(String id,String start){
+		
 		
 		getContentPane();
 		setLayout(new GridLayout(7,1));
@@ -58,9 +65,11 @@ public class panel3 extends JFrame{
 		JButton order =new JButton("주문" );
 		order.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                addprice(text6, text7, text8, text9, text10, text11);
-                
+            	String price= addprice(text6, text7, text8, text9, text10, text11)+"";
+            	
+            	saveprice(id,start,price);
                 setVisible(false);
+                
             }
         });
 		add("South", order);
@@ -68,31 +77,92 @@ public class panel3 extends JFrame{
 		setPreferredSize(new Dimension(350,350));
 		pack();
 		setVisible(true);
+		
 	}
-	public void addprice(JTextField text6,JTextField text7,JTextField text8,JTextField text9
+	public void saveprice(String id,String start,String price){
+		foodlist one = new foodlist(id,start,price);
+		list.add( one);
+		save(list);
+	}
+	public void save(ArrayList list){
+		SwingWorker worker = new SwingWorker(){
+			
+			@Override
+			protected Object doInBackground() throws Exception {
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				FileOutputStream fout = null;
+				ObjectOutputStream oos = null;
+
+				
+				
+				try{
+					fin = new FileInputStream("food.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list2 = (ArrayList) ois.readObject();
+					for (int i = 0; i < list2.size(); i++)
+						list.add((foodlist) list2.get(i));
+					
+					
+					fout = new FileOutputStream("food.dat");
+					oos = new ObjectOutputStream(fout);
+
+					oos.writeObject(list);//
+					oos.reset();
+					
+
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+						fout.close();
+						oos.close();
+					} catch (IOException ioe) {
+					}
+				}
+				return null;
+			}
+		};
+		worker.execute();
+	}
+	public int addprice(JTextField text6,JTextField text7,JTextField text8,JTextField text9
 			,JTextField text10,JTextField text11){
 		
-		int h=Integer.parseInt(text6.getText());
-        int s1=Integer.parseInt(text7.getText());
-        int r=Integer.parseInt(text8.getText());
-        int c1=Integer.parseInt(text9.getText());
-        int s2=Integer.parseInt(text10.getText());
-        int c2=Integer.parseInt(text11.getText());
-        
-        if(text6.getText().equals("")){}
-        else {a.price+=h*2000;}
-        if(text7.getText().equals("")){}
-        else {a.price+=s1*2000;}
-        if(text8.getText().equals("")){}
-        else {a.price+=r*1500;}
-        if(text9.getText().equals("")){}
-        else {a.price+=c1*1000;}
-        if(text10.getText().equals("")){}
-        else {a.price+=s2*1000;}
-        if(text11.getText().equals("")){}
-        else {a.price+=c2*1000;}
-        int total = h*2000+s1*2000+r*1500+c1*1000+s2*1000+c2*1000;
-        JOptionPane.showMessageDialog(null,"총 "+total+"원 입니다.");
+		int h;
+        int s1;
+        int r;
+        int c1;
+        int s2;
+        int c2;
+        int price=0;
+        if(text6.getText().equals("")){h=0;}
+        else {
+        	h=Integer.parseInt(text6.getText());
+        	price+=h*2000;}
+        if(text7.getText().equals("")){s1=0;}
+        else {
+        	s1=Integer.parseInt(text7.getText());
+        	price+=s1*2000;}
+        if(text8.getText().equals("")){r=0;}
+        else {
+        	r=Integer.parseInt(text8.getText());
+        	price+=r*1500;}
+        if(text9.getText().equals("")){c1=0;}
+        else {
+        	c1=Integer.parseInt(text9.getText());
+        	price+=c1*1000;}
+        if(text10.getText().equals("")){s2=0;}
+        else {
+        	s2=Integer.parseInt(text10.getText());
+        	price+=s2*1000;}
+        if(text11.getText().equals("")){c2=0;}
+        else {
+        	c2=Integer.parseInt(text11.getText());
+        	price+=c2*1000;}
+        JOptionPane.showMessageDialog(null,"총 "+price+"원 입니다.");
+        return price;
 	}
 	
 

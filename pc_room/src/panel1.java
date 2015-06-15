@@ -4,6 +4,10 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,10 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 
 public class panel1 extends JFrame{
-	main a = new main();
 	public panel1(){
 		
 		getContentPane();
@@ -28,7 +32,6 @@ public class panel1 extends JFrame{
 		
 		log.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-            	int k =0;
             	if(idTF.getText().equals("")){
             		JOptionPane.showMessageDialog(null,"아이디를 입력해주세요.");
             	}
@@ -36,22 +39,8 @@ public class panel1 extends JFrame{
             		JOptionPane.showMessageDialog(null,"비밀번호를 입력해주세요.");
             	}
             	else{
-            		for(int i=0;i<a.call().size();i++){
-            		System.out.println(((client) a.call().get(i)).getID());
-        			if(idTF.getText().equals(((client) a.call().get(i)).getID())){
-        				k=1;
-        				if(pwd.getText().equals(((client) a.call().get(i)).getpwd())){
-        					new panel2(getname(idTF.getText()),idTF.getText());
-        					setVisible(false);
-        				}
-        				else {
-        					
-        					JOptionPane.showMessageDialog(null,"비밀번호가 틀립니다.");
-        					
-        				}
-        			}
-            		}
-            		if(k==0){JOptionPane.showMessageDialog(null,"존재하지 않는 아이디입니다.");}
+            		call(idTF,pwd);
+            		
             	}
             	
                 
@@ -80,15 +69,116 @@ public class panel1 extends JFrame{
 		pack();
 		setVisible(true);
 	}
-	public String getname(String id){
-		String name =null;
-		for(int i =0;i<a.call().size();i++){
-			if(((client) a.call().get(i)).getID().equals(id)){
-				name = ((client) a.call().get(i)).getname();
+	public void call(JTextField id,JTextField pwd){
+		ArrayList<client> clients = new ArrayList<client>();
+		SwingWorker worker = new SwingWorker() {
+
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				
+
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					
+					for (int i = 0; i < list.size(); i++)
+						clients.add((client) list.get(i));
+
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+					} catch (IOException ioe) {
+					}
+				}
+				int k =0;
+				for(int i=0;i<clients.size();i++){
+		    		
+					if(id.getText().equals(clients.get(i).getID())){
+						k=1;
+						if(pwd.getText().equals(clients.get(i).getpwd())){
+							getname(id.getText());
+						}
+						else {
+							
+							JOptionPane.showMessageDialog(null,"비밀번호가 틀립니다.");
+							break;
+						}
+						
+					}
+					
+		    	}
+				if(k==0){
+						JOptionPane.showMessageDialog(null,"존재하지 않는 아이디입니다.");
+					}
+				
+				return null;
+			}
+		};
+		
+		worker.execute();
+		
+		
+		
+	}
+	String name=null;
+	public void getname(String id){
+		
+		ArrayList<client> clients = new ArrayList<client>();
+		SwingWorker worker = new SwingWorker() {
+
+			@Override
+			protected Object doInBackground() throws Exception {
+				// test for books
+				
+				FileInputStream fin = null;
+				ObjectInputStream ois = null;
+				
+
+				try {
+					fin = new FileInputStream("client.dat");
+					ois = new ObjectInputStream(fin);
+					ArrayList list = (ArrayList) ois.readObject();
+					
+					for (int i = 0; i < list.size(); i++)
+						clients.add((client) list.get(i));
+
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					try {
+						ois.close();
+						fin.close();
+					} catch (IOException ioe) {
+					}
+				}
+				
+				
+				int k=0;
+				for(int i =0;i<clients.size();i++){
+					if(clients.get(i).getID().equals(id)){
+						name = (clients.get(i).getname());
+						k=1;
+					}
+					
+				}
+				new panel2(name,id);
+				setVisible(false);
+				return null;
 				
 			}
-		}
-		return name;
+		};
+		
+		worker.execute();
+		//return name;
+		
 	}
 	
 	

@@ -24,7 +24,7 @@ public class use extends JFrame{
 	}
 	
 	public void addlist(){
-		ArrayList<usinglist> use = new ArrayList<usinglist>();
+		ArrayList<uselist> use = new ArrayList<uselist>();
 		SwingWorker worker = new SwingWorker() {
 
 			@Override
@@ -41,7 +41,7 @@ public class use extends JFrame{
 					ArrayList list = (ArrayList) ois.readObject();
 					
 					for (int i = 0; i < list.size(); i++)
-						use.add((usinglist) list.get(i));
+						use.add((uselist) list.get(i));
 					
 				} catch (Exception e) {
 					System.out.println(e.getMessage());

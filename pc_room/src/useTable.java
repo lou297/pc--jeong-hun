@@ -6,15 +6,15 @@ public class useTable extends AbstractTableModel {
 	private final static String[] COLUMNS = { "이름", "아이디", "시작시간",
 			"종료시간", "요금"};
 
-	private List<usinglist> usinglists;
+	private List<uselist> uselists;
 
-	public useTable(List<usinglist> usinglists) {
-		this.usinglists = usinglists;
+	public useTable(List<uselist> uselists) {
+		this.uselists = uselists;
 	}
 
 	@Override
 	public int getRowCount() {
-		return usinglists.size();
+		return uselists.size();
 	}
 
 	@Override
@@ -29,12 +29,12 @@ public class useTable extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		usinglist usinglist = usinglists.get(rowIndex);
+		uselist usinglist = uselists.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return usinglist.getname_();
+			return usinglist.getname();
 		case 1:
-			return usinglist.getID_();
+			return usinglist.getID();
 		case 2:
 			return usinglist.getstart();
 		case 3:
